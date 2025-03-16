@@ -11,4 +11,9 @@ public class HelloWorldController {
     public String getMessage() {
         return "Hello world!";
     }
+
+    @GetMapping("/api/flights")
+    public String getFlights() {
+        return "Hello world!";
+    }
 }
