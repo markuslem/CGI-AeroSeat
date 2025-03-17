@@ -1,11 +1,8 @@
 package com.example.aeroseat.services;
 
-import com.example.aeroseat.model.Airport;
 import com.example.aeroseat.repositories.AirportRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AirportService {
@@ -15,10 +12,7 @@ public class AirportService {
     }
 
     public String[] getAllAirportCodes() {
-        return airportRepository.findAll()
-                .stream()
-                .map(Airport::getAirportCode)
-                .toArray(String[]::new);
+        return airportRepository.findAllAirportCodes();
     }
 
 }

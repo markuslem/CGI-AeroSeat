@@ -8,5 +8,21 @@ CREATE TABLE IF NOT EXISTS public.airport
     CONSTRAINT airport_pkey PRIMARY KEY (id)
 ) TABLESPACE pg_default;
 DELETE FROM airport *;
+
+
 INSERT INTO airport(id, airport_code, airport_full_name, city_name, country) VALUES (1, 'TLL', 'Tallinna Lennujaam', 'Tallinn', 'Estonia');
 INSERT INTO airport(airport_code, airport_full_name, city_name, country) VALUES ('URE', 'Kuressaare Airport', 'Kuressaare', 'Estonia');
+
+-- Kasutasin näidisandmete loomiseks tehisintellekti
+-- Microsoft CoPilot . Kasutatud 2025-3-17. Prompt: 'This is my data.sql. Add airports from around the world to the list. [lisasin data.sql sisu]'
+-- Loomisel kasutatud: https://copilot.microsoft.com/.
+INSERT INTO airport(airport_code, airport_full_name, city_name, country) VALUES ('ATL', 'Hartsfield-Jackson Atlanta International Airport', 'Atlanta', 'United States');
+INSERT INTO airport(airport_code, airport_full_name, city_name, country) VALUES ('PEK', 'Beijing Capital International Airport', 'Beijing', 'China');
+INSERT INTO airport(airport_code, airport_full_name, city_name, country) VALUES ('DXB', 'Dubai International Airport', 'Dubai', 'United Arab Emirates');
+INSERT INTO airport(airport_code, airport_full_name, city_name, country) VALUES ('LAX', 'Los Angeles International Airport', 'Los Angeles', 'United States');
+INSERT INTO airport(airport_code, airport_full_name, city_name, country) VALUES ('HND', 'Tokyo Haneda Airport', 'Tokyo', 'Japan');
+INSERT INTO airport(airport_code, airport_full_name, city_name, country) VALUES ('ORD', 'O Hare International Airport', 'Chicago', 'United States');
+INSERT INTO airport(airport_code, airport_full_name, city_name, country) VALUES ('LHR', 'Heathrow Airport', 'London', 'United Kingdom');
+INSERT INTO airport(airport_code, airport_full_name, city_name, country) VALUES ('PVG', 'Shanghai Pudong International Airport', 'Shanghai', 'China');
+INSERT INTO airport(airport_code, airport_full_name, city_name, country) VALUES ('CDG', 'Charles de Gaulle Airport', 'Paris', 'France');
+INSERT INTO airport(airport_code, airport_full_name, city_name, country) VALUES ('DFW', 'Dallas/Fort Worth International Airport', 'Dallas-Fort Worth', 'United States');
