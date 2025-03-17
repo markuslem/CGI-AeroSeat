@@ -33,4 +33,8 @@ public class Airport {
 
     @OneToMany(mappedBy = "destinationAirport")
     private List<Flight> destinationTo = new ArrayList<>();
+
+    public String getAirportCode() {
+        return airportCode;
+    }
 }
