@@ -1,12 +1,21 @@
 package com.example.aeroseat.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Airport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,12 +38,10 @@ public class Airport {
     private String country;
 
     @OneToMany(mappedBy = "departureAirport")
-    private List<Flight> departureTo = new ArrayList<>();
+    @JsonBackReference
+    private List<Flight> departureTo;
 
     @OneToMany(mappedBy = "destinationAirport")
-    private List<Flight> destinationTo = new ArrayList<>();
-
-    public String getAirportCode() {
-        return airportCode;
-    }
+    @JsonBackReference
+    private List<Flight> destinationTo;
 }

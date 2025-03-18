@@ -2,10 +2,17 @@ package com.example.aeroseat.model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.lang.NonNull;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Flight {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,19 +30,18 @@ public class Flight {
     @Column(nullable = false)
     private float price;
 
-    @NonNull
     @Column(nullable = false)
     private LocalDateTime departureTime;
 
-    @NonNull
     @Column(nullable = false)
     private LocalDateTime arrivalTime;
 
     @ManyToOne
     @JoinColumn(name = "plane", nullable = false)
+    @JsonBackReference
     private Plane plane;
 
-    @NonNull
     @Column(nullable = false)
     private int occupiedSeats;
+
 }
