@@ -27,15 +27,21 @@
       </div>
     </div>
     <div>
-      <h1>{{ message }}</h1>
+      <div v-for="flight in flights">
+        <FlightCard :flight="flight"/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import FlightCard from '@/components/FlightCard.vue';
 
 export default {
+  components: {
+    FlightCard
+  },
   name: 'HomeView',
   data() {
     return {
@@ -45,7 +51,8 @@ export default {
       aeg: '',
       hind1: "500",
       hind2: "1000",
-      sihtkohad: ['AAR', 'AXT', 'BVA', 'TLL', 'SUV', 'PWM', 'LAX']
+      sihtkohad: ['AAR', 'AXT', 'BVA', 'TLL', 'SUV', 'PWM', 'LAX'],
+      flights: []
     };
   },
   mounted() {
@@ -55,6 +62,24 @@ export default {
       })
       .catch(error => {
         console.error('The message could not be read', error);
+      });
+    // All flight codes
+    axios.get('http://localhost:8081/api/flight-codes')
+      .then(response => {
+        this.sihtkohad = response.data;
+      })
+      .catch(error => {
+        console.log('Flight codes could not be read', error);
+      });
+
+    // kõik lendude objektid
+    axios.get('http://localhost:8081/api/flights')
+      .then(response => {
+        this.flights = response.data;
+        console.log("The flight data was read " + JSON.stringify(this.flights));
+      })
+      .catch(error => {
+        console.log('Flights could not be read', error);
       });
   }
 };

@@ -1,5 +1,6 @@
 package com.example.aeroseat.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,5 +30,6 @@ public class Plane {
     private int numberOfSeats;
 
     @OneToMany(mappedBy = "plane")
+    @JsonBackReference
     private List<Flight> flights = new ArrayList<>();
 }

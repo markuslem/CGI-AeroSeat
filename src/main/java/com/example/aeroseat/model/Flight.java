@@ -3,7 +3,9 @@ package com.example.aeroseat.model;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.lang.NonNull;
@@ -38,7 +40,8 @@ public class Flight {
 
     @ManyToOne
     @JoinColumn(name = "plane", nullable = false)
-    @JsonBackReference
+//    @JsonBackReference
+    @JsonManagedReference
     private Plane plane;
 
     @Column(nullable = false)
