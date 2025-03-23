@@ -1,7 +1,7 @@
 
-DELETE FROM flight *;
-DELETE
-FROM airport *;
+-- DELETE FROM flight *;
+-- DELETE
+-- FROM airport *;
 
 INSERT INTO airport(id, airport_code, airport_full_name, city_name, country)
 VALUES (1, 'TLL', 'Tallinna Lennujaam', 'Tallinn', 'Estonia');
@@ -33,8 +33,8 @@ INSERT INTO airport(id, airport_code, airport_full_name, city_name, country)
 VALUES (12, 'DFW', 'Dallas/Fort Worth International Airport', 'Dallas-Fort Worth', 'United States');
 
 
-DELETE
-FROM plane *;
+-- DELETE
+-- FROM plane *;
 
 -- Loomisel kasutatud: https://copilot.microsoft.com/.
 INSERT INTO plane (id, name, number_of_seats)

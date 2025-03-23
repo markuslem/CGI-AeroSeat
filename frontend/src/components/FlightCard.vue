@@ -37,7 +37,7 @@
     </div>
 
     <!-- Book button -->
-     <button type="button" id="book-button">Book now!</button>
+     <button type="button" id="book-button" @click="openBooking()">Book now!</button>
   </div>
 </template>
 <script>
@@ -59,6 +59,10 @@ export default {
     formatDate(timeString) {
       const date = new Date(timeString);
       return date.toISOString().split('T')[0];
+    },
+    openBooking() {
+      console.log("Routing to booking page");
+      this.$router.push("book")
     }
   }
 }
@@ -94,6 +98,7 @@ export default {
   border-radius: 1em;
   font-size: large;
   font-weight: 600;
-}
+  cursor: pointer;
 
+}
 </style>

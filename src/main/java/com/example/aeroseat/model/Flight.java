@@ -1,9 +1,9 @@
 package com.example.aeroseat.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -40,11 +40,12 @@ public class Flight {
 
     @ManyToOne
     @JoinColumn(name = "plane", nullable = false)
-//    @JsonBackReference
     @JsonManagedReference
     private Plane plane;
 
     @Column(nullable = false)
     private int occupiedSeats;
 
+    @OneToMany(mappedBy = "flight")
+    private List<Seat> seats = new ArrayList<>();
 }
