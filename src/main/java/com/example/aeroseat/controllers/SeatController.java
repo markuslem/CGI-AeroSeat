@@ -1,9 +1,7 @@
 package com.example.aeroseat.controllers;
 
 
-import com.example.aeroseat.model.Flight;
 import com.example.aeroseat.model.Seat;
-import com.example.aeroseat.services.FlightService;
 import com.example.aeroseat.services.SeatService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;

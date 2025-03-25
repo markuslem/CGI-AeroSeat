@@ -20,20 +20,28 @@ public class FlightService {
     public FlightService(FlightRepository flightRepository) {
         this.flightRepository = flightRepository;
     }
+
     public List<Flight> getAllFlights() {
         return flightRepository.findAll();
     }
+
     @Transactional
     public void addSeatsToAllFlights() {
         List<Flight> flights = entityManager.createQuery("SELECT f FROM Flight f", Flight.class).getResultList();
 
         for (Flight flight : flights) {
             int totalSeats = flight.getPlane().getNumberOfSeats();
-            for (int i = 1; i <= totalSeats; i++) {
+            for (int i = 0; i <= totalSeats; i++) {
                 Seat seat = new Seat();
-                seat.setSeatNumber(i + "A");
+                String column = switch (i % 4 + 1) {
+                    case 1 -> "A";
+                    case 2 -> "B";
+                    case 3 -> "C";
+                    default -> "D";
+                };
+                seat.setSeatNumber(Math.floorDiv(i, 4) + 1 + column);
                 seat.setFlight(flight);
-                seat.setOccupied(false);
+                seat.setOccupied(Math.random() > 0.5);
                 entityManager.persist(seat);
             }
         }

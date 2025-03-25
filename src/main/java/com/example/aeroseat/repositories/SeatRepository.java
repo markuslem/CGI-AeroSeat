@@ -1,6 +1,5 @@
 package com.example.aeroseat.repositories;
 
-import com.example.aeroseat.model.Flight;
 import com.example.aeroseat.model.Seat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -1,8 +1,6 @@
 package com.example.aeroseat.services;
 
-import com.example.aeroseat.model.Flight;
 import com.example.aeroseat.model.Seat;
-import com.example.aeroseat.repositories.FlightRepository;
 import com.example.aeroseat.repositories.SeatRepository;
 import org.springframework.stereotype.Service;
 
