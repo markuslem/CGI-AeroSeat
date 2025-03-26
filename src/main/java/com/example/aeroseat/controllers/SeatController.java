@@ -3,11 +3,9 @@ package com.example.aeroseat.controllers;
 
 import com.example.aeroseat.model.Seat;
 import com.example.aeroseat.services.SeatService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,4 +23,18 @@ public class SeatController {
     public ResponseEntity<List<Seat>> getAllSeats(@PathVariable Long flightId) {
         return ResponseEntity.ok(seatService.getSeatsByFlightId(flightId));
     }
+
+    @PostMapping("/api/seats/booking")
+    public ResponseEntity<Integer> bookSeats(@RequestBody List<Long> seatIds) {
+        System.out.println(seatIds);
+        try {
+            int updatedSeats = seatService.bookSeats(seatIds);
+            System.out.println("Updated Seats: " + updatedSeats);
+            return ResponseEntity.ok(updatedSeats);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
+

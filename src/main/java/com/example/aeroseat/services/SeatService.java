@@ -20,4 +20,8 @@ public class SeatService {
     public List<Seat> getSeatsByFlightId(long flightId) {
         return seatRepository.findByFlightId(flightId);
     }
+    public int bookSeats(List<Long> seatIds) {
+        System.out.println("Service updating seats " + seatIds);
+        return seatRepository.bookById(seatIds);
+    }
 }

@@ -16,9 +16,10 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
   },
   {
-    path: '/book',
+    path: '/book/:flightId',
     name: 'book',
-    component: () => import('../views/BookView.vue')
+    component: () => import('../views/BookView.vue'),
+    props: route => ({ flightId: Number(route.params.flightId) })
   }
 ]
 

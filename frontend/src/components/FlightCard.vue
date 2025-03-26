@@ -62,7 +62,7 @@ export default {
     },
     openBooking() {
       console.log("Routing to booking page");
-      this.$router.push("book")
+      this.$router.push({ name: "book", params: { flightId: Number(this.flight.id)} });
     }
   }
 }
