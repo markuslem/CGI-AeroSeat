@@ -9,10 +9,10 @@
         <div id="seat-grid">
             <div v-for="seat in seats">
                 <!-- Kuvame istekohta vastaval sellele, kas ta on hõivatud või mitte -->
-                <button v-if="seat.occupied" class="occupied-seat">{{ seat.seatNumber }}</button>
+                <button v-if="seat.occupied" class="occupied-seat">{{ seat.seatRow + seat.seatColumn }}</button>
                 <!-- Kui mitte hõivatud istekoht valitakse hiireklõpsuga, siis selle värv muutub -->
                 <button v-if="!seat.occupied" @click="selectSeat(seat)"
-                    :class="['un-occupied-seat', { 'selected-seat': selected.includes(seat) }]">{{ seat.seatNumber
+                    :class="['un-occupied-seat', { 'selected-seat': selected.includes(seat) }]">{{ seat.seatRow + seat.seatColumn
                     }}</button>
             </div>
         </div>

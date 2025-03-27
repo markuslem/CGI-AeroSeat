@@ -17,8 +17,14 @@ public class Seat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+//    @Column(nullable = false)
+//    private String seatNumber;
+
     @Column(nullable = false)
-    private String seatNumber;
+    private int seatRow;
+
+    @Column(nullable = false)
+    private char seatColumn;
 
     @ManyToOne
     @JoinColumn(name = "flight", nullable = false)

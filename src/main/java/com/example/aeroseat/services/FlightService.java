@@ -33,13 +33,14 @@ public class FlightService {
             int totalSeats = flight.getPlane().getNumberOfSeats();
             for (int i = 0; i <= totalSeats; i++) {
                 Seat seat = new Seat();
-                String column = switch (i % 4 + 1) {
-                    case 1 -> "A";
-                    case 2 -> "B";
-                    case 3 -> "C";
-                    default -> "D";
+                char column = switch (i % 4 + 1) {
+                    case 1 -> 'A';
+                    case 2 -> 'B';
+                    case 3 -> 'C';
+                    default -> 'D';
                 };
-                seat.setSeatNumber(Math.floorDiv(i, 4) + 1 + column);
+                seat.setSeatRow(Math.floorDiv(i, 4) + 1);
+                seat.setSeatColumn(column);
                 seat.setFlight(flight);
                 seat.setOccupied(Math.random() > 0.5);
                 entityManager.persist(seat);

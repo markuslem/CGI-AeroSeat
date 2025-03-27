@@ -28,12 +28,18 @@ public class SeatService {
     }
 
     /**
-     * Istekohtade broneerimine ID-de põhjal
+     * Istekohtade broneerimine ID-de põhjal.
+     * Kui vähemalt 1 istekoht nende istekohtade seast on juba broneeritud, siis katkestame broneeringu.
      * @param seatIds Kõikide istekohtade ID-d, mida soovitakse broneerida
      * @return Muudetud ridade arv
      */
     public int bookSeats(List<Long> seatIds) {
         System.out.println("Service updating seats " + seatIds);
-        return seatRepository.bookById(seatIds);
+        if (seatRepository.findAllBySeatIds(seatIds) > 0) {
+            System.out.println("A seat is already booked");
+            return -1; // Mõni istekoht on juba broneeritud
+        } else {
+            return seatRepository.bookById(seatIds);
+        }
     }
 }

@@ -17,4 +17,10 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
     @Modifying
     @Query("UPDATE Seat s SET s.isOccupied = true WHERE s.id IN :ids AND s.isOccupied = false")
     public int bookById(@Param("ids") List<Long> ids);
+
+    /* Kui leitakse istekohtade ID-de seast vastav iste, mis on juba broneeritud,
+    siis tagastatakse 0-st suurem täisarv.
+     */
+    @Query("SELECT count(*) FROM Seat s WHERE s.id IN :ids AND s.isOccupied = true")
+    public int findAllBySeatIds(List<Long> ids);
 }
