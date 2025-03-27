@@ -50,16 +50,22 @@ export default {
     }
   },
   methods: {
+    
+    // Kasutajale kuvatakse ainult tunnid ja minutid
     formatTime(timeString) {
       const date = new Date(timeString);
       const hours = date.getHours().toString().padStart(2, '0');
       const minutes = date.getMinutes().toString().padStart(2, '0');
       return hours + ":" + minutes;
     },
+
+    // Tagastab ainult kuupäeva osa "timeString"-ist
     formatDate(timeString) {
       const date = new Date(timeString);
       return date.toISOString().split('T')[0];
     },
+    
+    // Avame BookingView.vue koos parameetriga flightId = this.flight.id
     openBooking() {
       console.log("Routing to booking page");
       this.$router.push({ name: "book", params: { flightId: Number(this.flight.id)} });

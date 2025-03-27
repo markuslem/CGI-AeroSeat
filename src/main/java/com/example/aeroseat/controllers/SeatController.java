@@ -24,6 +24,11 @@ public class SeatController {
         return ResponseEntity.ok(seatService.getSeatsByFlightId(flightId));
     }
 
+    /**
+     * Antud ID-dega istekohti soovitakse broneerida
+     * @param seatIds list, mis sisaldab broneeritavaid istekohti
+     * @return  Muudetud ridade arv andmebaasis
+     */
     @PostMapping("/api/seats/booking")
     public ResponseEntity<Integer> bookSeats(@RequestBody List<Long> seatIds) {
         System.out.println(seatIds);

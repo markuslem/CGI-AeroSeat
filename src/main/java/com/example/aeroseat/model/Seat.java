@@ -26,5 +26,5 @@ public class Seat {
     private Flight flight;
 
     @Column(nullable = false)
-    private boolean isOccupied;
+    private boolean isOccupied; // true, kui istekoht on hõivatud
 }

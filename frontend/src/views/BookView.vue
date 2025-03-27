@@ -8,9 +8,12 @@
         </div>
         <div id="seat-grid">
             <div v-for="seat in seats">
+                <!-- Kuvame istekohta vastaval sellele, kas ta on hõivatud või mitte -->
                 <button v-if="seat.occupied" class="occupied-seat">{{ seat.seatNumber }}</button>
-                <button v-if="!seat.occupied" @click="selectSeat(seat)" class="un-occupied-seat">{{ seat.seatNumber
-                }}</button>
+                <!-- Kui mitte hõivatud istekoht valitakse hiireklõpsuga, siis selle värv muutub -->
+                <button v-if="!seat.occupied" @click="selectSeat(seat)"
+                    :class="['un-occupied-seat', { 'selected-seat': selected.includes(seat) }]">{{ seat.seatNumber
+                    }}</button>
             </div>
         </div>
     </div>
@@ -20,27 +23,29 @@
 import axios from 'axios';
 export default {
     props: {
-        flightId: {
+        flightId: { // Lennu ID antakse ette parameetrina
             type: Number,
             required: true
         }
     },
     data() {
         return {
-            seats: null,
-            selected: []
+            seats: null, // Kõik istekohad
+            selected: [] // Valitud istekohad
         }
     },
     mounted() {
+        // Leiame lennule vastavad istekohad
         axios.get(`http://localhost:8081/api/seats/${this.flightId}`)
             .then(response => {
-            this.seats = response.data;
+                this.seats = response.data;
             })
             .catch(error => {
                 console.error('The message could not be read', error);
             });
     },
     methods: {
+        // Kui istekoht valitakse kasutaja poolt, siis see lisatakse valitud istekohtade listi
         selectSeat(seat) {
             if (this.selected.includes(seat)) {
                 this.selected = this.selected.filter(s => s !== seat);
@@ -48,6 +53,8 @@ export default {
                 this.selected.push(seat);
             }
         },
+        // Istekohtade valikute kinnitamine
+        // Istekohtadele vastavad ID-d saadetakse back-end serverisse
         confirmChoices() {
             axios.post('http://localhost:8081/api/seats/booking', this.selected.map(s => s.id), {
                 headers: {
@@ -130,6 +137,11 @@ export default {
 .un-occupied-seat {
     border-radius: 5px;
     background-color: rgb(61, 181, 67);
+}
+
+.selected-seat {
+    background-color: rgb(42, 94, 198);
+    color: white;
 }
 
 #confirm-btn {

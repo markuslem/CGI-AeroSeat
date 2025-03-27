@@ -11,7 +11,7 @@ import java.util.List;
 
 @Transactional
 public interface SeatRepository extends JpaRepository<Seat, Long> {
-    @Query("SELECT s FROM Seat s WHERE s.flight.id = :flightId")
+    @Query("SELECT s FROM Seat s WHERE s.flight.id = :flightId ORDER BY s.id")
     public List<Seat> findByFlightId(@Param("flightId") long flightId);
 
     @Modifying
