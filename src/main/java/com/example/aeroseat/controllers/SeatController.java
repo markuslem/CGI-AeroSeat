@@ -1,7 +1,7 @@
 package com.example.aeroseat.controllers;
 
 
-import com.example.aeroseat.DTOs.SeatDTO;
+import com.example.aeroseat.DTOs.SeatListWithFlightIdDTO;
 import com.example.aeroseat.model.Seat;
 import com.example.aeroseat.services.SeatService;
 import org.springframework.http.HttpStatus;
@@ -31,10 +31,10 @@ public class SeatController {
      * @return  Muudetud ridade arv andmebaasis
      */
     @PostMapping("/api/seats/booking")
-    public ResponseEntity<List<SeatDTO>> bookSeats(@RequestBody List<Long> seatIds) {
+    public ResponseEntity<SeatListWithFlightIdDTO> bookSeats(@RequestBody List<Long> seatIds) {
         System.out.println(seatIds);
         try {
-            List<SeatDTO> updatedSeats = seatService.bookSeats(seatIds);
+            SeatListWithFlightIdDTO updatedSeats = seatService.bookSeats(seatIds);
             System.out.println("Updated Seats: " + updatedSeats);
             return ResponseEntity.ok(updatedSeats);
         } catch (Exception e) {

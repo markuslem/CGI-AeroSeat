@@ -1,12 +1,12 @@
 package com.example.aeroseat.services;
 
 import com.example.aeroseat.DTOs.SeatDTO;
+import com.example.aeroseat.DTOs.SeatListWithFlightIdDTO;
 import com.example.aeroseat.exceptions.SeatUpdateException;
 import com.example.aeroseat.model.Seat;
 import com.example.aeroseat.repositories.SeatRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,7 +37,7 @@ public class SeatService {
      * @param seatIds Kõikide istekohtade ID-d, mida soovitakse broneerida
      * @return Muudetud ridade arv
      */
-    public synchronized List<SeatDTO> bookSeats(List<Long> seatIds) {
+    public synchronized SeatListWithFlightIdDTO bookSeats(List<Long> seatIds) {
         System.out.println("Service updating seats " + seatIds);
         List<SeatDTO> updatedSeats;
         if (seatRepository.findAllOccupiedBySeatIds(seatIds) > 0) {
@@ -45,7 +45,7 @@ public class SeatService {
         } else if ((updatedSeats = seatRepository.findAllBySeatsId(seatIds)).size() == seatIds.size()) {
             System.out.println("Started updating seats " + updatedSeats);
             seatRepository.bookById(seatIds);
-            return updatedSeats;
+            return new SeatListWithFlightIdDTO(updatedSeats, -1);
         } else {
             // Paremeetriks antud ID-de listis oli ID, mida ei ole andmebaasis
             throw new SeatUpdateException("Couldn't find a seat with matching ID.");

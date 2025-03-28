@@ -26,6 +26,6 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
     @Query("SELECT count(*) FROM Seat s WHERE s.id IN :ids AND s.isOccupied = true")
     public int findAllOccupiedBySeatIds(List<Long> ids);
 
-    @Query("SELECT new com.example.aeroseat.DTOs.SeatDTO(s.id, s.seatRow, s.seatColumn, s.isOccupied) FROM Seat s WHERE s.id IN :ids")
+    @Query("SELECT new com.example.aeroseat.DTOs.SeatDTO(s.id, s.seatRow, s.seatColumn) FROM Seat s WHERE s.id IN :ids")
     public List<SeatDTO> findAllBySeatsId(@Param("ids") List<Long> ids);
 }

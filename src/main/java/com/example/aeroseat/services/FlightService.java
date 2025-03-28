@@ -1,5 +1,6 @@
 package com.example.aeroseat.services;
 
+import com.example.aeroseat.DTOs.FlightWithSeatCountDTO;
 import com.example.aeroseat.model.Flight;
 import com.example.aeroseat.model.Seat;
 import com.example.aeroseat.repositories.FlightRepository;
@@ -23,6 +24,10 @@ public class FlightService {
 
     public List<Flight> getAllFlights() {
         return flightRepository.findAll();
+    }
+
+    public List<FlightWithSeatCountDTO> findAllFlightsWithSeatCount() {
+        return flightRepository.findAllWithSeatCount();
     }
 
     @Transactional

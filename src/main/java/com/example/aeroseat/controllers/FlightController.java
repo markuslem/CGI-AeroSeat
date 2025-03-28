@@ -1,6 +1,7 @@
 package com.example.aeroseat.controllers;
 
 
+import com.example.aeroseat.DTOs.FlightWithSeatCountDTO;
 import com.example.aeroseat.model.Flight;
 import com.example.aeroseat.services.FlightService;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class FlightController {
     }
 
     @GetMapping("/api/flights")
-    public ResponseEntity<List<Flight>> getAllFlights() {
-        return ResponseEntity.ok(flightService.getAllFlights());
+    public ResponseEntity<List<FlightWithSeatCountDTO>> getAllFlights() {
+        return ResponseEntity.ok(flightService.findAllFlightsWithSeatCount());
     }
 }

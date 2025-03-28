@@ -4,7 +4,7 @@
         <div id="seat-info">
             <p>Your seat(s):</p>
             <br>
-            <div v-for="seat in seats">
+            <div v-for="seat in seats.seats">
                 <p>{{ seat.seatRow }}{{ seat.seatColumn }}</p>
             </div>
         </div>
