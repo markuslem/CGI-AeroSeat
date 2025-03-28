@@ -20,6 +20,11 @@ const routes = [
     name: 'book',
     component: () => import('../views/BookView.vue'),
     props: route => ({ flightId: Number(route.params.flightId) })
+  },
+  {
+    path: '/booking-complete/',
+    name: 'booking-complete',
+    component: () => import('../views/BookingCompleteView.vue'),
   }
 ]
 

@@ -12,7 +12,8 @@
                 <button v-if="seat.occupied" class="occupied-seat">{{ seat.seatRow + seat.seatColumn }}</button>
                 <!-- Kui mitte hõivatud istekoht valitakse hiireklõpsuga, siis selle värv muutub -->
                 <button v-if="!seat.occupied" @click="selectSeat(seat)"
-                    :class="['un-occupied-seat', { 'selected-seat': selected.includes(seat) }]">{{ seat.seatRow + seat.seatColumn
+                    :class="['un-occupied-seat', { 'selected-seat': selected.includes(seat) }]">{{ seat.seatRow +
+                        seat.seatColumn
                     }}</button>
             </div>
         </div>
@@ -63,8 +64,12 @@ export default {
             })
                 .then(response => {
                     console.log("Updated seats: " + this.selected.map(s => s.id));
-                    console.log(response.data);
-                    this.$router.push("/");
+                    console.log(JSON.stringify(response.data));
+                    // Salvestame valitud istekohad localstorage-isse
+                    localStorage.setItem('seats', JSON.stringify(response.data));
+                    this.$router.push({
+                        name: 'booking-complete',
+                    });
                 })
                 .catch(error => {
                     console.error('The message could not be read', error);
