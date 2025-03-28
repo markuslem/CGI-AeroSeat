@@ -26,10 +26,18 @@ public class FlightService {
         return flightRepository.findAll();
     }
 
+    /**
+     * Tagastab kogu info lennu kohta välja arvatud istekohad.
+     * Täpsustatakse istekohtade arv.
+     */
     public List<FlightWithSeatCountDTO> findAllFlightsWithSeatCount() {
         return flightRepository.findAllWithSeatCount();
     }
 
+    /**
+     * Lisab kõikidele andmebaasis olevate lendude istekohad vastavalt sellele, kui palju on
+     * lennukis ruumi.
+     */
     @Transactional
     public void addSeatsToAllFlights() {
         List<Flight> flights = entityManager.createQuery("SELECT f FROM Flight f", Flight.class).getResultList();

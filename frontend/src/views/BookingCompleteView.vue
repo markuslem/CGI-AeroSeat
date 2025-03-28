@@ -1,12 +1,10 @@
 <template>
     <div>
         <h1>Booking complete!</h1>
+        <p>Your seat(s):</p>
         <div id="seat-info">
-            <p>Your seat(s):</p>
             <br>
-            <div v-for="seat in seats.seats">
-                <p>{{ seat.seatRow }}{{ seat.seatColumn }}</p>
-            </div>
+            <p v-for="seat in seats.seats">{{ seat.seatRow }}{{ seat.seatColumn }}</p>
         </div>
 
         <p>Thank you for booking a flight with us!</p>
@@ -28,10 +26,9 @@ export default {
 
     margin: 0.5em auto;
     padding: 0.5em;
-    border: 1px solid black;
-}
-#seat-info > div {
-    font-weight: 800;
 }
 
+#seat-info>p {
+    font-weight: 800;
+}
 </style>

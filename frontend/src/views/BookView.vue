@@ -1,6 +1,23 @@
 <template>
-    <h1>Booking page</h1>
     <div id="booking-container">
+    <h1>Select seats</h1>
+    <div id="preferences">
+        <p style="font-weight: 700;">Your preferences:</p>
+        <p style="padding-bottom: 0.5em;">(Highlighted in orange)</p>
+        <!-- Kasutaja eelistuste valimine -->
+        <div>
+            <label>Next to window:</label>
+            <input type="checkbox" v-model="windowSeat" />
+        </div>
+        <div>
+            <label>More legroom:</label>
+            <input type="checkbox" v-model="legroom" />
+        </div>
+        <div>
+            <label>Near exit:</label>
+            <input type="checkbox" v-model="exit" />
+        </div>
+    </div>
         <div id="column-box">
             <div v-for="letter in ['A', 'B', 'C', 'D']">
                 <p>{{ letter }}</p>
@@ -12,13 +29,16 @@
                 <button v-if="seat.occupied" class="occupied-seat">{{ seat.seatRow + seat.seatColumn }}</button>
                 <!-- Kui mitte hõivatud istekoht valitakse hiireklõpsuga, siis selle värv muutub -->
                 <button v-if="!seat.occupied" @click="selectSeat(seat)"
-                    :class="['un-occupied-seat', { 'selected-seat': selected.includes(seat) }]">{{ seat.seatRow +
-                        seat.seatColumn
+                    :class="['un-occupied-seat', { 'selected-seat': selected.includes(seat),
+                        'seat-highlight': (windowSeat && (seat.seatColumn === 'A' || seat.seatColumn === 'D')) || 
+                        (legroom && seat.seatRow % 30 == 1) || (exit && (seat.seatRow % 30 < 3 || seat.seatRow % 30 > 28))
+                     }]">{{ seat.seatRow +
+                        seat.seatColumn 
                     }}</button>
             </div>
         </div>
     </div>
-    <button id="confirm-btn" @click="confirmChoices()">Confirm choices</button>
+    <button id="confirm-btn" @click="confirmChoices()">Confirm choices ({{ this.selected.length }})</button>
 </template>
 <script>
 import axios from 'axios';
@@ -32,7 +52,11 @@ export default {
     data() {
         return {
             seats: null, // Kõik istekohad
-            selected: [] // Valitud istekohad
+            selected: [], // Valitud istekohad
+            // Kasutaja eelistused istekoha asukoha suhtes
+            windowSeat: false,
+            legroom: false,
+            exit: false
         }
     },
     mounted() {
@@ -85,6 +109,19 @@ export default {
     align-items: center;
     flex-direction: column;
 }
+#preferences {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1em;
+    padding: 0.5em;
+
+    border: 4px solid rgb(61, 133, 181);
+    border-radius: 16px;
+    width: 30%;
+
+}
 
 #column-box {
     display: grid;
@@ -133,6 +170,7 @@ export default {
     border-style: none;
 }
 
+
 .occupied-seat {
     background-color: rgba(184, 184, 184, 0.518);
     text-align: center;
@@ -142,6 +180,10 @@ export default {
 .un-occupied-seat {
     border-radius: 5px;
     background-color: rgb(61, 181, 67);
+}
+
+.seat-highlight {
+    background-color: rgb(233, 183, 34);
 }
 
 .selected-seat {
@@ -167,4 +209,6 @@ export default {
     left: 50%;
     transform: translateX(-50%);
 }
+
+
 </style>
