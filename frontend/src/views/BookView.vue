@@ -1,23 +1,23 @@
 <template>
     <div id="booking-container">
-    <h1>Select seats</h1>
-    <div id="preferences">
-        <p style="font-weight: 700;">Your preferences:</p>
-        <p style="padding-bottom: 0.5em;">(Highlighted in orange)</p>
-        <!-- Kasutaja eelistuste valimine -->
-        <div>
-            <label>Next to window:</label>
-            <input type="checkbox" v-model="windowSeat" />
+        <h1>Select seats</h1>
+        <div id="preferences">
+            <p style="font-weight: 700;">Your preferences:</p>
+            <p style="padding-bottom: 0.5em;">(Highlighted in orange)</p>
+            <!-- Kasutaja eelistuste valimine -->
+            <div>
+                <label>Next to window:</label>
+                <input type="checkbox" v-model="windowSeat" />
+            </div>
+            <div>
+                <label>More legroom:</label>
+                <input type="checkbox" v-model="legroom" />
+            </div>
+            <div>
+                <label>Near exit:</label>
+                <input type="checkbox" v-model="exit" />
+            </div>
         </div>
-        <div>
-            <label>More legroom:</label>
-            <input type="checkbox" v-model="legroom" />
-        </div>
-        <div>
-            <label>Near exit:</label>
-            <input type="checkbox" v-model="exit" />
-        </div>
-    </div>
         <div id="column-box">
             <div v-for="letter in ['A', 'B', 'C', 'D']">
                 <p>{{ letter }}</p>
@@ -28,13 +28,13 @@
                 <!-- Kuvame istekohta vastaval sellele, kas ta on hõivatud või mitte -->
                 <button v-if="seat.occupied" class="occupied-seat">{{ seat.seatRow + seat.seatColumn }}</button>
                 <!-- Kui mitte hõivatud istekoht valitakse hiireklõpsuga, siis selle värv muutub -->
-                <button v-if="!seat.occupied" @click="selectSeat(seat)"
-                    :class="['un-occupied-seat', { 'selected-seat': selected.includes(seat),
-                        'seat-highlight': (windowSeat && (seat.seatColumn === 'A' || seat.seatColumn === 'D')) || 
-                        (legroom && seat.seatRow % 30 == 1) || (exit && (seat.seatRow % 30 < 3 || seat.seatRow % 30 > 28))
-                     }]">{{ seat.seatRow +
-                        seat.seatColumn 
-                    }}</button>
+                <button v-if="!seat.occupied" @click="selectSeat(seat)" :class="['un-occupied-seat', {
+                                    'selected-seat': selected.includes(seat),
+                                    'seat-highlight': (windowSeat && (seat.seatColumn === 'A' || seat.seatColumn === 'D')) ||
+                                        (legroom && seat.seatRow % 30 === 1) || (exit && (seat.seatRow % 30 < 3 || seat.seatRow % 30 > 28)),
+                                }]">{{ seat.seatRow +
+                                    seat.seatColumn
+                                }}</button>
             </div>
         </div>
     </div>
@@ -109,6 +109,7 @@ export default {
     align-items: center;
     flex-direction: column;
 }
+
 #preferences {
     display: flex;
     flex-direction: column;
@@ -147,14 +148,14 @@ export default {
     width: 50%;
     margin-bottom: 4em;
 
-    /* Representing plane borders */
-    border-left: 10px;
-    border-right: 10px;
-    border-left-style: solid;
-    border-right-style: solid;
-    padding-left: 2em;
-    padding-right: 2em;
-    border-color: rgba(201, 201, 201, 0.839);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2), 0px 6px 20px rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
+}
+
+@media (max-width: 550px) {
+    #seat-grid {
+        width: 85%;
+    }
 }
 
 #seat-grid>div {
@@ -168,6 +169,12 @@ export default {
     width: 3em;
     cursor: pointer;
     border-style: none;
+}
+
+/* Väljapääsude juurde lisatakse tühja ruumi */
+#seat-grid>div:nth-child(120n+1), #seat-grid>div:nth-child(120n+2), 
+#seat-grid>div:nth-child(120n+3), #seat-grid>div:nth-child(120n+4) {
+    margin-top: 5em;
 }
 
 
@@ -209,6 +216,4 @@ export default {
     left: 50%;
     transform: translateX(-50%);
 }
-
-
 </style>
