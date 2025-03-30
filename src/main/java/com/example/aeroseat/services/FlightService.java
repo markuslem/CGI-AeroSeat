@@ -9,6 +9,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -44,7 +45,13 @@ public class FlightService {
 
         for (Flight flight : flights) {
             int totalSeats = flight.getPlane().getNumberOfSeats();
-            for (int i = 0; i <= totalSeats; i++) {
+            int occupiedSeats = flight.getOccupiedSeats();
+            System.out.println("Total Seats : " + totalSeats + " OccupiedSeats : " + occupiedSeats);
+            if (occupiedSeats > totalSeats) { continue; }
+            Seat[] seats = new Seat[totalSeats];
+            int seatsOccupied = 0;
+
+            for (int i = 0; i < totalSeats; i++) {
                 Seat seat = new Seat();
                 char column = switch (i % 4 + 1) {
                     case 1 -> 'A';
@@ -55,7 +62,18 @@ public class FlightService {
                 seat.setSeatRow(Math.floorDiv(i, 4) + 1);
                 seat.setSeatColumn(column);
                 seat.setFlight(flight);
-                seat.setOccupied(Math.random() > 0.5);
+                seats[i] = seat;
+            }
+            System.out.println("reached here");
+            // Valime suvalisi istekohti, mida hõivata
+            while(seatsOccupied < occupiedSeats) {
+                Seat seat = seats[(int) (Math.random() * totalSeats)];
+                if (!seat.isOccupied()) {
+                    seat.setOccupied(true);
+                    seatsOccupied++;
+                }
+            }
+            for (Seat seat : seats) {
                 entityManager.persist(seat);
             }
         }

@@ -1,34 +1,40 @@
 <template>
   <div id="flex-container">
     <div id="filters">
+
+      <!-- Filter Destination -->
       <div class="paar">
-        <p>Sihtkoht</p>
-        <select id="sihtkohad-select">
-          <option v-for="koht in sihtkohad">{{ koht }}</option>
+        <p>Destination</p>
+        <select v-model="selectedDestination">
+          <option v-for="airport in destinations" :key="airport.id" :value="airport.id">
+            {{ airport.cityName }}
+          </option>
         </select>
       </div>
+
+      <!-- Filter Date -->
       <div class="paar">
-        <p>Kuupäev</p>
-        <input type="date">
+        <p>Date</p>
+        <input v-model="selectedDate" type="date">
       </div>
+
+      <!-- Filter Price -->
       <div class="paar">
-        <p>Lennuaeg</p>
-        <input type="time">
-        <p>-</p>
-        <input type="time">
+        <p>Price</p>
+        <input type="number" min="1" max="3000" v-model="priceHigh">
       </div>
-      <div class="paar">
-        <p>Hind</p>
-        <div style="display: flex;">
-          <input type="number" min="1" max="3000" v-model="hind1">
-          <p>-</p>
-          <input type="number" min="1" max="3000" v-model="hind2">
-        </div>
-      </div>
+      <button id="reset-btn" @click="console.log(typeof this.selectedDate)">Reset Filters</button>
     </div>
     <div>
       <div v-for="flight in flights">
-        <FlightCard :flight="flight"/>
+        <div v-if="(this.selectedDestination === flight.destinationAirport.id || this.selectedDestination === null) // Asukoha põhjal filtreerimine
+          &&
+          (formatToDate(this.selectedDate) == formatToDate(flight.departureTime) || this.selectedDate === null) // Kuupäeva põhjal filtreerimine
+          &&
+          (priceHigh >= flight.price || priceHigh === null) // Hinna põhjal filtreerimine
+        ">
+          <FlightCard :flight="flight" />
+        </div>
       </div>
     </div>
   </div>
@@ -45,28 +51,20 @@ export default {
   name: 'HomeView',
   data() {
     return {
-      message: '',
-      sihtkoht: '',
       kuupaev: Date(),
-      aeg: '',
-      hind1: "500",
-      hind2: "1000",
-      sihtkohad: ['AAR', 'AXT', 'BVA', 'TLL', 'SUV', 'PWM', 'LAX'],
+      priceHigh: null,
+      destinations: [],
+      selectedDestination: null,
+      selectedDate: null,
       flights: []
     };
   },
   mounted() {
-    axios.get('http://localhost:8081/api/message')
+    
+    // All city names of airports
+    axios.get('http://localhost:8081/api/airport-names')
       .then(response => {
-        this.message = response.data;
-      })
-      .catch(error => {
-        console.error('The message could not be read', error);
-      });
-    // All flight codes
-    axios.get('http://localhost:8081/api/flight-codes')
-      .then(response => {
-        this.sihtkohad = response.data;
+        this.destinations = response.data;
       })
       .catch(error => {
         console.log('Flight codes could not be read', error);
@@ -81,15 +79,22 @@ export default {
       .catch(error => {
         console.log('Flights could not be read', error);
       });
+  },
+  methods: {
+    formatToDate(dateString) {
+      const date = new Date(dateString);
+      return date.toISOString().split('T')[0];
+    }
   }
 };
 </script>
 
 <style>
 html {
-    background: linear-gradient(135deg, #7dd5f8, #FFFFFF);
-    min-height: 100%;
+  background: linear-gradient(135deg, #7dd5f8, #FFFFFF);
+  min-height: 100%;
 }
+
 #flex-container {
   display: flex;
 }
@@ -98,10 +103,26 @@ html {
   margin: 2em;
   padding: 2em;
   border-style: solid;
+  border-radius: 5px;
 }
 
 .paar {
-  border-style: solid;
   padding: 0.5em;
+}
+
+input,
+select,
+#reset-btn {
+  border-radius: 5px;
+  /* border-width: 0; */
+  border-style: solid;
+  border-width: 0.2em;
+  padding: 0.4em;
+  background-color: #d4e1ffed;
+}
+
+#reset-btn {
+  padding: 1em;
+  margin-top: 1em;
 }
 </style>
