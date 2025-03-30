@@ -3,7 +3,7 @@
         <h1>Select seats</h1>
         <div id="preferences">
             <p style="font-weight: 700;">Your preferences:</p>
-            <p style="padding-bottom: 0.5em;">(Highlighted in orange)</p>
+            <p style="padding-bottom: 0.5em;">(Highlighted in dark green)</p>
             <!-- Kasutaja eelistuste valimine -->
             <div>
                 <label>Next to window:</label>
@@ -17,6 +17,10 @@
                 <label>Near exit:</label>
                 <input type="checkbox" v-model="exit" />
             </div>
+            <div>
+                <label>Multiple seats:</label>
+                <input type="checkbox" v-model="multipleSeats" />
+            </div>
         </div>
         <div id="column-box">
             <div v-for="letter in ['A', 'B', 'C', 'D']">
@@ -27,18 +31,19 @@
             <div v-for="seat in seats">
                 <!-- Kuvame istekohta vastaval sellele, kas ta on hõivatud või mitte -->
                 <button v-if="seat.occupied" class="occupied-seat">{{ seat.seatRow + seat.seatColumn }}</button>
-                <!-- Kui mitte hõivatud istekoht valitakse hiireklõpsuga, siis selle värv muutub -->
+                <!-- Kui mitte hõivatud istekoht valitakse hiireklõpsuga, siis selle värv muutub.
+                Mitme Istekoha valimisel valitakse valikute ühisosa. -->
                 <button v-if="!seat.occupied" @click="selectSeat(seat)" :class="['un-occupied-seat', {
-                                    'selected-seat': selected.includes(seat),
-                                    'seat-highlight': (windowSeat && (seat.seatColumn === 'A' || seat.seatColumn === 'D')) ||
-                                        (legroom && seat.seatRow % 30 === 1) || (exit && (seat.seatRow % 30 < 3 || seat.seatRow % 30 > 28)),
-                                }]">{{ seat.seatRow +
-                                    seat.seatColumn
-                                }}</button>
+                    'selected-seat': selected.includes(seat),
+                    'seat-highlight': highlightSeat(seat) || nextToUnoccupied(seat),
+                }]">{{ seat.seatRow +
+                    seat.seatColumn
+                    }}</button>
             </div>
         </div>
     </div>
-    <button id="confirm-btn" @click="confirmChoices()">Confirm choices ({{ this.selected.length }})</button>
+    <button v-if="this.selected.length > 0" id="confirm-btn" @click="confirmChoices()">Confirm choices ({{
+        this.selected.length }})</button>
 </template>
 <script>
 import axios from 'axios';
@@ -56,7 +61,8 @@ export default {
             // Kasutaja eelistused istekoha asukoha suhtes
             windowSeat: false,
             legroom: false,
-            exit: false
+            exit: false,
+            multipleSeats: false,
         }
     },
     mounted() {
@@ -70,6 +76,46 @@ export default {
             });
     },
     methods: {
+        // Meetod, mis ütleb, kas istekoht peaks olema esile tõsteud
+        highlightSeat(seat) {
+            const count = [this.windowSeat, this.legroom, this.exit].filter(Boolean).length;
+            const window = this.windowSeat && (seat.seatColumn === 'A' || seat.seatColumn === 'D');
+            const legroom = this.legroom && seat.seatRow % 30 === 1;
+            const exit = this.exit && (seat.seatRow % 30 < 4 || seat.seatRow % 30 > 29 ||
+            this.seats[this.seats.length - 1].seatRow - seat.seatRow < 3);
+
+            if (count === 0) {
+                return false;
+            } else if (count === 1) {
+                return (window || legroom || exit);
+            } else if (count === 2) {
+                return (window && legroom) || (window && exit) || (legroom && exit);
+            } else if (count === 3) {
+                return (window && legroom && exit);
+            }
+        },
+
+        // Kui istekoht paikneb vaba istekoha kõrval ja soovitakse kõrvuti istuda, siis istekoht tõstetakse esile
+        nextToUnoccupied(seat) {
+            if (this.multipleSeats && !seat.occupied) {
+                const seatIndex = this.seats.indexOf(seat);
+                let nextSeat;
+                let prevSeat;
+                if (seat.seatColumn === 'D' || seatIndex === this.seats.length - 1) { // Sellele istekohale ei ole paremal ühtegi järgnevat
+                    nextSeat = true;
+                } else {
+                    nextSeat = this.seats[seatIndex + 1].occupied;
+                }
+                if (seat.seatColumn === 'A') { // Selle istekoha vasakul pool ei ole ühtegi istekohta
+                    prevSeat = true;
+                } else {
+                    prevSeat = this.seats[seatIndex - 1].occupied;
+                }
+                return (!nextSeat) || (!prevSeat); // Kui vasak või parem isekoht ei ole hõivatud
+            }
+            return false;
+        },
+
         // Kui istekoht valitakse kasutaja poolt, siis see lisatakse valitud istekohtade listi
         selectSeat(seat) {
             if (this.selected.includes(seat)) {
@@ -78,6 +124,7 @@ export default {
                 this.selected.push(seat);
             }
         },
+
         // Istekohtade valikute kinnitamine
         // Istekohtadele vastavad ID-d saadetakse back-end serverisse
         confirmChoices() {
@@ -108,6 +155,7 @@ export default {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+
 }
 
 #preferences {
@@ -118,7 +166,7 @@ export default {
     margin-bottom: 1em;
     padding: 0.5em;
 
-    border: 4px solid rgb(61, 133, 181);
+    border: 4px solid rgb(28, 158, 109);
     border-radius: 16px;
     width: 30%;
 
@@ -145,7 +193,7 @@ export default {
 #seat-grid {
     display: grid;
     grid-template-columns: 0.5fr 2fr 2fr 0.5fr;
-    width: 50%;
+    width: 50%;align-items: center;
     margin-bottom: 4em;
 
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2), 0px 6px 20px rgba(0, 0, 0, 0.19);
@@ -153,8 +201,14 @@ export default {
 }
 
 @media (max-width: 550px) {
-    #seat-grid {
+
+    #seat-grid,
+    #column-box {
         width: 85%;
+    }
+
+    #preferences {
+        width: 70%;
     }
 }
 
@@ -164,16 +218,19 @@ export default {
 }
 
 #seat-grid>div>button {
-    padding-bottom: 0.5em;
+    padding: 0.5em;
     margin: 0.5em;
     width: 3em;
     cursor: pointer;
     border-style: none;
+    font-weight: bold;
 }
 
 /* Väljapääsude juurde lisatakse tühja ruumi */
-#seat-grid>div:nth-child(120n+1), #seat-grid>div:nth-child(120n+2), 
-#seat-grid>div:nth-child(120n+3), #seat-grid>div:nth-child(120n+4) {
+#seat-grid>div:nth-child(120n+1),
+#seat-grid>div:nth-child(120n+2),
+#seat-grid>div:nth-child(120n+3),
+#seat-grid>div:nth-child(120n+4) {
     margin-top: 5em;
 }
 
@@ -186,15 +243,16 @@ export default {
 
 .un-occupied-seat {
     border-radius: 5px;
-    background-color: rgb(61, 181, 67);
+    background-color: rgb(115, 219, 120);
 }
 
 .seat-highlight {
-    background-color: rgb(233, 183, 34);
+    background-color: rgb(24, 146, 15);
+    color: white;
 }
 
 .selected-seat {
-    background-color: rgb(42, 94, 198);
+    background-color: black;
     color: white;
 }
 

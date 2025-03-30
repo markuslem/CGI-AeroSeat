@@ -80,7 +80,9 @@ export default {
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 1em;
   border-style: solid;
+  border-radius: 8px;
   margin: 0.5em;
+  background-color: white;
 }
 
 .pair {

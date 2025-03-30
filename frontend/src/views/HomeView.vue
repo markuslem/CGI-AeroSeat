@@ -86,6 +86,10 @@ export default {
 </script>
 
 <style>
+html {
+    background: linear-gradient(135deg, #7dd5f8, #FFFFFF);
+    min-height: 100%;
+}
 #flex-container {
   display: flex;
 }
