@@ -15,7 +15,7 @@ export default {
     name: 'BookingCompleteView',
     data() {
         return {
-            seats: JSON.parse(localStorage.getItem('seats')) || []
+            seats: JSON.parse(localStorage.getItem('seats')) || [],
         };
     },
 }

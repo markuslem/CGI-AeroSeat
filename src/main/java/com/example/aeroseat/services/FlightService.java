@@ -9,7 +9,6 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -23,10 +22,6 @@ public class FlightService {
         this.flightRepository = flightRepository;
     }
 
-    public List<Flight> getAllFlights() {
-        return flightRepository.findAll();
-    }
-
     /**
      * Tagastab kogu info lennu kohta välja arvatud istekohad.
      * Täpsustatakse istekohtade arv.
@@ -38,6 +33,7 @@ public class FlightService {
     /**
      * Lisab kõikidele andmebaasis olevate lendude istekohad vastavalt sellele, kui palju on
      * lennukis ruumi.
+     * Istekohad broneeritakse juhuslikult, kuid täpselt sellises mahus nagu on täpsustatud andmebaasis.
      */
     @Transactional
     public void addSeatsToAllFlights() {
@@ -46,7 +42,6 @@ public class FlightService {
         for (Flight flight : flights) {
             int totalSeats = flight.getPlane().getNumberOfSeats();
             int occupiedSeats = flight.getOccupiedSeats();
-            System.out.println("Total Seats : " + totalSeats + " OccupiedSeats : " + occupiedSeats);
             if (occupiedSeats > totalSeats) { continue; }
             Seat[] seats = new Seat[totalSeats];
             int seatsOccupied = 0;
@@ -64,7 +59,6 @@ public class FlightService {
                 seat.setFlight(flight);
                 seats[i] = seat;
             }
-            System.out.println("reached here");
             // Valime suvalisi istekohti, mida hõivata
             while(seatsOccupied < occupiedSeats) {
                 Seat seat = seats[(int) (Math.random() * totalSeats)];

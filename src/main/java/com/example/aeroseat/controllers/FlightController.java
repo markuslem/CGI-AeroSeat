@@ -2,7 +2,6 @@ package com.example.aeroseat.controllers;
 
 
 import com.example.aeroseat.DTOs.FlightWithSeatCountDTO;
-import com.example.aeroseat.model.Flight;
 import com.example.aeroseat.services.FlightService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;

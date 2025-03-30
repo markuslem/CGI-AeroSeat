@@ -11,8 +11,6 @@ import java.util.List;
 @Repository
 public interface AirportRepository extends JpaRepository<Airport, Long> {
 
-    @Query("SELECT a.airportCode FROM Airport a")
-    public String[] findAllAirportCodes();
 
     @Query("SELECT new com.example.aeroseat.DTOs.AirportCityWithIdDTO(a.id, a.cityName) FROM Airport a")
     public List<AirportCityWithIdDTO> airportCityWithIds();

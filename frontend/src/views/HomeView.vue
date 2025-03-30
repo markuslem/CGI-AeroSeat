@@ -23,8 +23,10 @@
         <p>Price</p>
         <input type="number" min="1" max="3000" v-model="priceHigh">
       </div>
-      <button id="reset-btn" @click="console.log(typeof this.selectedDate)">Reset Filters</button>
+
+      <button id="reset-btn" @click="resetFilters()">Reset Filters</button>
     </div>
+
     <div>
       <div v-for="flight in flights">
         <div v-if="(this.selectedDestination === flight.destinationAirport.id || this.selectedDestination === null) // Asukoha põhjal filtreerimine
@@ -60,7 +62,7 @@ export default {
     };
   },
   mounted() {
-    
+
     // All city names of airports
     axios.get('http://localhost:8081/api/airport-names')
       .then(response => {
@@ -84,9 +86,14 @@ export default {
     formatToDate(dateString) {
       const date = new Date(dateString);
       return date.toISOString().split('T')[0];
+    },
+    resetFilters() {
+      this.selectedDestination = null;
+      this.selectedDate = null;
+      this.priceHigh = null;
     }
   }
-};
+}
 </script>
 
 <style>

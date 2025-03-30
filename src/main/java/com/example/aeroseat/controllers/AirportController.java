@@ -20,11 +20,6 @@ public class AirportController {
         this.airportService = airportService;
     }
 
-    @GetMapping("/api/flight-codes")
-    public ResponseEntity<String[]> getAllAirportCodes() {
-        String[] airportCodes = airportService.getAllAirportCodes();
-        return ResponseEntity.ok(airportCodes);
-    }
 
     @GetMapping("/api/airport-names")
     public ResponseEntity<List<AirportCityWithIdDTO>> getAirportNames() {

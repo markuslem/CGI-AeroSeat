@@ -14,10 +14,9 @@ public class AirportService {
         this.airportRepository = airportRepository;
     }
 
-    public String[] getAllAirportCodes() {
-        return airportRepository.findAllAirportCodes();
-    }
-
+    /**
+     * Tagastab kõik linnad, kus lennujaamad asuvad, koos lennujaamadele vastavatele ID-dele.
+     */
     public List<AirportCityWithIdDTO> getAllCities() {
         return airportRepository.airportCityWithIds();
     }

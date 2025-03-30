@@ -77,6 +77,7 @@ export default {
     },
     methods: {
         // Meetod, mis ütleb, kas istekoht peaks olema esile tõsteud
+        // Kui on tehtud mitu valikut nende eelistuste seast, siis tõstetakse esile nende ühisosa
         highlightSeat(seat) {
             const count = [this.windowSeat, this.legroom, this.exit].filter(Boolean).length;
             const window = this.windowSeat && (seat.seatColumn === 'A' || seat.seatColumn === 'D');
